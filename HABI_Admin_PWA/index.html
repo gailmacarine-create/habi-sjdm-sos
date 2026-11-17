@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#102a43">
+<title>HABI Admin | SJDM Command Center</title>
+<style>
+:root{--navy:#102a43;--navy2:#0b2035;--panel:#173653;--blue:#2f80bd;--blue2:#3d91d0;--ink:#172b3b;--muted:#718096;--line:#e5ebf1;--bg:#f3f6fa;--white:#fff;--green:#17845d;--amber:#b7791f;--red:#c24141}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--ink)}button,input{font:inherit}button{cursor:pointer}
+#authGate{min-height:100vh;display:grid;place-items:center;padding:24px;background:radial-gradient(circle at 20% 10%,#1d526c 0,#102a43 48%,#071827 100%)}
+.login-card{width:min(100%,430px);background:#fff;border-radius:22px;padding:34px;box-shadow:0 24px 70px #0005}.brand{text-align:center;color:#fff;margin-bottom:22px}.brand-mark{font-size:38px;font-weight:900;letter-spacing:8px}.brand small{display:block;color:#c8d9e6;letter-spacing:1.6px;margin-top:4px}.eyebrow{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--blue);font-weight:800}.login-card h1{margin:8px 0;font-size:26px;color:var(--navy)}.login-card p{color:#66788a;line-height:1.55;font-size:14px}.field{display:grid;gap:7px;margin:18px 0}.field label{font-size:13px;font-weight:700;color:#33485b}.field input{width:100%;border:1px solid #d6e0e8;border-radius:10px;padding:13px 14px;outline:none}.field input:focus{border-color:var(--blue);box-shadow:0 0 0 3px #2f80bd20}.primary{border:0;background:var(--blue);color:#fff;border-radius:10px;padding:13px 16px;font-weight:800}.primary:hover{background:#246c9f}.primary:disabled{opacity:.6;cursor:wait}.wide{width:100%}.note{font-size:13px;min-height:20px;margin-top:12px;color:#526579}.note.error{color:#b42318}.note.success{color:var(--green)}.security-note{background:#f0f5f9;border-radius:10px;padding:12px;font-size:12px;color:#526579;line-height:1.5;margin-top:18px}
+#app{display:none;min-height:100vh}.sidebar{position:fixed;inset:0 auto 0 0;width:258px;background:linear-gradient(180deg,var(--navy),var(--navy2));color:#e9f2f8;padding:22px 15px;display:flex;flex-direction:column;z-index:20;overflow:auto}.side-brand{padding:3px 12px 22px;border-bottom:1px solid #ffffff20}.side-brand strong{font-size:24px;letter-spacing:5px}.side-brand span{display:block;font-size:10px;letter-spacing:1.2px;color:#a9c1d3;margin-top:5px}.side-label{font-size:10px;color:#8fa9bd;letter-spacing:1.7px;text-transform:uppercase;padding:20px 12px 8px}.nav{display:grid;gap:5px}.nav button{display:flex;align-items:center;gap:11px;text-align:left;width:100%;border:0;background:transparent;color:#d3e0ea;padding:11px 12px;border-radius:10px;font-size:13px;font-weight:650}.nav button:hover{background:#ffffff12}.nav button.active{background:#236b98;color:#fff;box-shadow:inset 3px 0 #8bd0ff}.nav .ico{width:21px;text-align:center;font-size:16px}.side-bottom{margin-top:auto;border-top:1px solid #ffffff20;padding:15px 8px 0;font-size:12px;color:#a9c1d3}.side-bottom button{margin-top:10px;width:100%;border:1px solid #ffffff45;background:transparent;color:#fff;border-radius:9px;padding:10px;font-weight:700}
+.main{margin-left:258px;min-height:100vh}.topbar{height:72px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 30px;position:sticky;top:0;z-index:10}.crumb{font-size:13px;color:#718096}.top-actions{display:flex;align-items:center;gap:12px}.avatar{width:36px;height:36px;border-radius:50%;background:#dcecf8;color:var(--navy);display:grid;place-items:center;font-weight:800}.admin-name{font-size:12px;font-weight:700}.mobile-menu{display:none;border:0;background:#edf3f8;border-radius:9px;padding:8px 10px}
+.content{padding:28px 30px 45px;max-width:1500px;margin:auto}.page-head{display:flex;align-items:flex-start;justify-content:space-between;gap:15px;margin-bottom:22px}.page-head h1{font-size:25px;margin:0;color:var(--navy)}.page-head p{margin:7px 0 0;color:#738395;font-size:13px}.pill{font-size:11px;padding:6px 10px;border-radius:30px;background:#e8f5ee;color:#17734f;font-weight:800;white-space:nowrap}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px}.stat,.panel,.module-card{background:#fff;border:1px solid var(--line);border-radius:15px;box-shadow:0 4px 16px #19334b08}.stat{padding:18px}.stat .label{font-size:12px;color:#718096}.stat .value{font-size:25px;font-weight:800;color:var(--navy);margin:9px 0 4px}.stat .sub{font-size:11px;color:#8795a4}.panel{padding:20px;margin-top:17px}.panel h2{font-size:15px;margin:0 0 7px;color:var(--navy)}.panel p{font-size:13px;color:#738395;line-height:1.6;margin:0}.module-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:18px}.module-card{padding:18px;text-align:left;cursor:pointer;transition:.18s;border:1px solid var(--line)}.module-card:hover{transform:translateY(-2px);border-color:#9fc9e4;box-shadow:0 8px 22px #19334b12}.module-card .symbol{font-size:22px}.module-card h3{font-size:14px;margin:10px 0 5px;color:var(--navy)}.module-card p{font-size:12px;color:#718096;line-height:1.5;margin:0}.module-card small{display:inline-block;margin-top:12px;color:#9a6a1d;background:#fff5df;border-radius:20px;padding:5px 8px;font-size:10px;font-weight:800}.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}.toolbar input,.toolbar select{border:1px solid #d9e2ea;border-radius:9px;padding:10px 12px;background:#fff;color:#405367}.empty{padding:28px;text-align:center;border:1px dashed #cbd7e1;border-radius:12px;color:#718096;font-size:13px;background:#fbfcfe}.empty strong{display:block;color:#33485b;margin-bottom:6px}.two-col{display:grid;grid-template-columns:1.2fr .8fr;gap:15px}.list-row{display:flex;justify-content:space-between;gap:15px;padding:13px 0;border-bottom:1px solid var(--line);font-size:13px}.list-row:last-child{border-bottom:0}.tag{font-size:10px;color:#66788a;background:#edf2f7;padding:5px 8px;border-radius:20px}
+@media(max-width:1100px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.module-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){.sidebar{transform:translateX(-100%);transition:transform .22s;width:270px;box-shadow:10px 0 30px #0002}.sidebar.open{transform:translateX(0)}.main{margin-left:0}.mobile-menu{display:inline-block}.topbar{padding:0 15px;height:64px}.content{padding:22px 15px 35px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.stat{padding:14px}.stat .value{font-size:21px}.module-grid{grid-template-columns:1fr}.two-col{grid-template-columns:1fr}.page-head h1{font-size:21px}.admin-name{display:none}}
+@media(max-width:420px){.grid{grid-template-columns:1fr 1fr}.stat .value{font-size:19px}.login-card{padding:25px 20px}}
+</style>
+
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" type="image/png" sizes="32x32" href="./icons/favicon-32.png">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<meta name="theme-color" content="#102a43">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="HABI Admin">
+<meta name="mobile-web-app-capable" content="yes">
+</head>
+<body>
+<section id="authGate">
+  <div>
+    <div class="brand"><div class="brand-mark">HABI</div><small>ADMINISTRATION • SAN JOSE DEL MONTE</small></div>
+    <div class="login-card">
+      <div class="eyebrow">Authorized personnel only</div>
+      <h1>Admin Sign In</h1>
+      <p>Mag-sign in gamit ang awtorisadong HABI administrator account. Walang public registration sa Admin App.</p>
+      <form id="loginForm">
+        <div class="field"><label for="email">Email address</label><input id="email" type="email" autocomplete="username" required placeholder="admin@example.com"></div>
+        <div class="field"><label for="password">Password</label><input id="password" type="password" autocomplete="current-password" required placeholder="Enter your password"></div>
+        <button class="primary wide" id="loginBtn" type="submit">Sign in to Admin</button>
+      </form>
+      <div id="loginNote" class="note" aria-live="polite"></div>
+      <div class="security-note">Access is checked against the HABI Firestore <b>admins</b> document for your Firebase UID, including <b>role = admin</b> and <b>active = true</b>. A successful password login alone does not grant admin access.</div>
+    </div>
+  </div>
+</section>
+
+<div id="app">
+  <aside class="sidebar" id="sidebar">
+    <div class="side-brand"><strong>HABI</strong><span>ADMIN COMMAND CENTER</span></div>
+    <div class="side-label">Workspace</div>
+    <nav class="nav" id="nav">
+      <button class="active" data-page="overview"><span class="ico">▦</span>Dashboard Overview</button>
+      <button data-page="tubig"><span class="ico">💧</span>HABI Tubig</button>
+      <button data-page="clean"><span class="ico">♻️</span>HABI Clean</button>
+      <button data-page="flood"><span class="ico">🌧️</span>Flood Guard</button>
+      <button data-page="urban"><span class="ico">🏙️</span>Urban Watch</button>
+      <button data-page="mobility"><span class="ico">🚌</span>Mobility</button>
+      <button data-page="sos"><span class="ico">🚨</span>SJDM SOS</button>
+      <button data-page="kislap"><span class="ico">⚡</span>HABI Kislap</button>
+      <button data-page="community"><span class="ico">📋</span>Community Reports</button>
+      <button data-page="feedback"><span class="ico">💬</span>HABI Feedback</button>
+    </nav>
+    <div class="side-label">Administration</div>
+    <nav class="nav">
+      <button data-page="users"><span class="ico">👥</span>User Management</button>
+      <button data-page="logs"><span class="ico">🧾</span>Admin Activity Logs</button>
+      <button data-page="settings"><span class="ico">⚙️</span>Settings & All About SJDM</button>
+    </nav>
+    <div class="side-bottom"><div id="sideEmail">Signed in as admin</div><button id="logoutBtn" type="button">Sign out</button></div>
+  </aside>
+  <main class="main">
+    <header class="topbar">
+      <div style="display:flex;align-items:center;gap:12px"><button class="mobile-menu" id="menuBtn" aria-label="Open navigation">☰</button><div class="crumb">HABI / <b id="crumb">Dashboard Overview</b></div></div>
+      <div class="top-actions"><span class="admin-name" id="topEmail">Administrator</span><div class="avatar" id="avatar">A</div></div>
+    </header>
+    <div class="content" id="content"></div>
+  </main>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-app.js";
+import { getAuth, setPersistence, browserLocalPersistence, signInWithEmailAndPassword, onAuthStateChanged, signOut, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, collection, getDocs, addDoc, updateDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/13.3.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDOGhIgxLw_ZgewC6tpYqKzsgL0v3xHQTY",
+  authDomain: "habi-sjdm.firebaseapp.com",
+  projectId: "habi-sjdm",
+  storageBucket: "habi-sjdm.firebasestorage.app",
+  messagingSenderId: "1021612103145",
+  appId: "1:1021612103145:web:79f6ffdcb7aa3b85fb2778",
+  measurementId: "G-L8DPRBR8CV"
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+let verifiedAdminUser = null;
+let adminSessionLogWritten = false;
+await setPersistence(auth, browserLocalPersistence);
+
+const $ = id => document.getElementById(id);
+const gate = $('authGate'), shell = $('app'), note = $('loginNote');
+function showNote(message, type=''){ note.textContent = message; note.className = 'note ' + type; }
+function friendlyError(error){
+  const map = {
+    'auth/invalid-credential':'Mali ang email o password.',
+    'auth/user-disabled':'Naka-disable ang account na ito.',
+    'auth/too-many-requests':'Masyadong maraming pagtatangka. Subukan muli mamaya.',
+    'auth/network-request-failed':'May problema sa internet connection.',
+    'permission-denied':'Hindi mabasa ang admin record. Suriin ang Firestore Rules at admin document.'
+  };
+  return map[error.code] || error.message || 'Hindi nakumpleto ang request.';
+}
+async function verifyAdmin(user){
+  const ref = doc(db, 'admins', user.uid);
+  const snap = await getDoc(ref);
+  if (!snap.exists()) return false;
+  const data = snap.data();
+  return data.role === 'admin' && data.active === true;
+}
+async function enterAdmin(user){
+  try {
+    const allowed = await verifyAdmin(user);
+    if (!allowed) {
+      await signOut(auth);
+      gate.style.display = 'grid';
+      showNote('Walang Admin access ang account na ito. Tanging active admin UID na may role = admin ang pinapayagan.', 'error');
+      return;
+    }
+    verifiedAdminUser=user;
+    gate.style.display = 'none';
+    shell.style.display = 'block';
+    if(!adminSessionLogWritten){adminSessionLogWritten=true;await writeAdminActivity('Admin signed in','Dashboard Overview');}
+    $('sideEmail').textContent = user.email || 'Admin account';
+    $('topEmail').textContent = user.email || 'Administrator';
+    $('avatar').textContent = (user.email || 'A').charAt(0).toUpperCase();
+    renderPage('overview');
+  } catch (error) {
+    await signOut(auth).catch(()=>{});
+    gate.style.display = 'grid';
+    shell.style.display = 'none';
+    showNote('Hindi ma-verify ang Admin access: ' + friendlyError(error), 'error');
+  }
+}
+$('loginForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const btn = $('loginBtn');
+  btn.disabled = true; btn.textContent = 'Verifying…'; showNote('Sinusuri ang Firebase account at Admin authorization…');
+  try {
+    const credential = await signInWithEmailAndPassword(auth, $('email').value.trim(), $('password').value);
+    await enterAdmin(credential.user);
+  } catch (error) { showNote(friendlyError(error), 'error'); }
+  finally { btn.disabled = false; btn.textContent = 'Sign in to Admin'; }
+});
+onAuthStateChanged(auth, user => {
+  if (user) enterAdmin(user);
+  else { verifiedAdminUser=null;adminSessionLogWritten=false;shell.style.display = 'none'; gate.style.display = 'grid'; }
+});
+$('logoutBtn').addEventListener('click', async()=>{await writeAdminActivity('Admin signed out','');verifiedAdminUser=null;adminSessionLogWritten=false;await signOut(auth);});
+$('menuBtn').addEventListener('click',()=>$('sidebar').classList.toggle('open'));
+
+
+let habiCachedReports=[];
+async function loadHabiReports(){const snap=await getDocs(collection(db,'habiReports'));habiCachedReports=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>String(b.createdAtClient||'').localeCompare(String(a.createdAtClient||'')));return habiCachedReports;}
+function safeHtml(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+async function writeAdminActivity(action, page=''){
+  const user=verifiedAdminUser;
+  if(!user)return;
+  try{await addDoc(collection(db,'adminActivityLogs'),{adminUid:user.uid,adminEmail:user.email||'',action,page,timestamp:serverTimestamp(),userAgent:navigator.userAgent||''});}
+  catch(error){console.warn('Admin activity log could not be saved:',error);}
+}
+function activityDate(value){const d=value?.toDate?.()||(value?new Date(value):null);return d&&!Number.isNaN(d.getTime())?d.toLocaleString():'Timestamp unavailable';}
+async function renderAdminActivityLogs(){
+ const host=$('content');host.innerHTML='<div class="panel">Loading admin activity logs…</div>';
+ try{
+  const snap=await getDocs(collection(db,'adminActivityLogs'));
+  const rows=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.timestamp?.toMillis?.()||Date.parse(b.timestamp||'')||0)-(a.timestamp?.toMillis?.()||Date.parse(a.timestamp||'')||0));
+  const body=rows.map(r=>`<tr><td>${safeHtml(activityDate(r.timestamp))}</td><td>${safeHtml(r.adminEmail||'—')}</td><td>${safeHtml(r.action||'—')}</td><td>${safeHtml(r.page||'—')}</td><td title="${safeHtml(r.userAgent||'')}">${safeHtml((r.userAgent||'—').slice(0,85))}</td></tr>`).join('');
+  host.innerHTML=`<div class="page-head"><div><h1>🧾 Admin Activity Logs</h1><p>Records of verified admin sign-ins and pages opened in the Admin App.</p></div><button class="primary" id="refreshAdminLogs">Refresh</button></div><div class="grid"><div class="stat"><div class="label">Recorded admin activities</div><div class="value">${rows.length}</div><div class="sub">From adminActivityLogs</div></div></div><div class="panel"><h2>Activity history</h2><div style="overflow:auto;margin-top:14px"><table style="width:100%;border-collapse:collapse;font-size:12px;min-width:760px"><thead><tr style="text-align:left;background:#f3f6fa"><th style="padding:10px">Date / time</th><th style="padding:10px">Admin</th><th style="padding:10px">Activity</th><th style="padding:10px">Page</th><th style="padding:10px">Browser / device</th></tr></thead><tbody>${body||'<tr><td colspan="5" style="padding:22px;text-align:center;color:#718096">No activity recorded yet. Sign in or open a page after applying the Firestore Rules.</td></tr>'}</tbody></table></div></div>`;
+  $('refreshAdminLogs')?.addEventListener('click',renderAdminActivityLogs);
+ }catch(e){host.innerHTML=`<div class="page-head"><div><h1>🧾 Admin Activity Logs</h1><p>Audit trail</p></div></div><div class="panel"><h2>Could not load admin activity logs</h2><p>${safeHtml(friendlyError(e))}</p><p>Check Firestore Rules for /adminActivityLogs.</p></div>`;}
+}
+async function renderRecentAdminActivity(){
+ const host=$('recentAdminActivity');if(!host)return;
+ try{const snap=await getDocs(collection(db,'adminActivityLogs'));const rows=snap.docs.map(d=>d.data()).sort((a,b)=>(b.timestamp?.toMillis?.()||0)-(a.timestamp?.toMillis?.()||0)).slice(0,5);
+ host.innerHTML=rows.length?rows.map(r=>`<div class="list-row"><span>${safeHtml(r.action||'Admin activity')} · ${safeHtml(r.page||'')}</span><small>${safeHtml(activityDate(r.timestamp))}</small></div>`).join(''):empty('No activity records yet','Sign-ins and page visits will appear here after Firestore Rules are updated.');
+ }catch(e){host.innerHTML=empty('Activity logs unavailable',friendlyError(e));}
+}
+
+function reportModuleLabel(m){return ({'habi-tubig':'HABI Tubig','habi-clean':'HABI Clean','flood-guard':'Flood Guard','urban-watch':'Urban Watch','mobility':'Mobility','sjdm-sos':'SJDM SOS','habi-kislap':'HABI Kislap','community-reports':'Community Reports','habi-feedback':'HABI Feedback'})[m]||m||'Other';}
+async function renderLiveReports(key){const host=$('content');host.innerHTML='<div class="panel">Loading live Firestore submissions…</div>';try{const rows=await loadHabiReports();const expectedModule=({tubig:'habi-tubig',clean:'habi-clean',flood:'flood-guard',urban:'urban-watch',mobility:'mobility',sos:'sjdm-sos',kislap:'habi-kislap',community:'community-reports',feedback:'habi-feedback'})[key]||key;const filtered=rows.filter(r=>r.module===expectedModule);const counts={total:filtered.length,pending:filtered.filter(r=>/pending|submitted/i.test(r.status||'')).length,progress:filtered.filter(r=>/progress/i.test(r.status||'')).length,resolved:filtered.filter(r=>/resolved|closed/i.test(r.status||'')).length};const cards=`<div class="grid"><div class="stat"><div class="label">Total submissions</div><div class="value">${counts.total}</div></div><div class="stat"><div class="label">Pending</div><div class="value">${counts.pending}</div></div><div class="stat"><div class="label">In progress</div><div class="value">${counts.progress}</div></div><div class="stat"><div class="label">Resolved</div><div class="value">${counts.resolved}</div></div></div>`;const list=filtered.map(r=>{const data=r.data||{};const details=Object.entries(data).map(([k,v])=>`<div><b>${safeHtml(k)}:</b> ${safeHtml(v)}</div>`).join('');return `<article class="panel" style="margin-top:12px"><div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap"><b>${safeHtml(reportModuleLabel(r.module))} · ${safeHtml(r.formId||'Submission')}</b><span class="tag">${safeHtml(r.status||'Pending Review')}</span></div><p style="margin:8px 0;color:#64748b;font-size:12px">${safeHtml(r.userEmail||'User')} · ${safeHtml(r.createdAtClient||'Cloud timestamp')}</p><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:6px;font-size:13px">${details}</div>${(r.files||[]).length?`<p style="font-size:12px;margin-top:8px">Attachments noted: ${safeHtml((r.files||[]).map(f=>f.name).join(', '))} (file contents are not uploaded yet)</p>`:''}<div style="display:flex;gap:8px;align-items:center;margin-top:12px;flex-wrap:wrap"><select id="status-${safeHtml(r.id)}"><option ${r.status==='Pending Review'?'selected':''}>Pending Review</option><option ${r.status==='In Progress'?'selected':''}>In Progress</option><option ${r.status==='Resolved'?'selected':''}>Resolved</option><option ${r.status==='Rejected'?'selected':''}>Rejected</option></select><button class="primary" data-save-status="${safeHtml(r.id)}">Save status</button><small id="msg-${safeHtml(r.id)}"></small></div></article>`;}).join('');host.innerHTML=`<div class="page-head"><div><h1>${safeHtml(pages[key]?.icon||'📋')} ${safeHtml(pages[key]?.title||'Reports')}</h1><p>Live submissions from HABI User App via Firebase Firestore.</p></div><button class="primary" id="refreshReports">Refresh</button></div>${cards}<div class="panel"><h2>Submitted records (${filtered.length})</h2>${list||'<div class="empty"><strong>No submissions yet.</strong> New reports will appear here after users submit them while signed in.</div>'}</div>`;}catch(e){host.innerHTML=`<div class="panel"><h2>Could not load submissions</h2><p>${safeHtml(friendlyError(e))}</p><p>Check that Firestore Rules allow active admins to read /habiReports.</p></div>`;}}
+$('content').addEventListener('click',async e=>{if(e.target.id==='refreshReports'){const key=document.querySelector('[data-page].active')?.dataset.page||'overview';await renderLiveReports(key);}const btn=e.target.closest('[data-save-status]');if(btn){const id=btn.dataset.saveStatus;const select=$('status-'+id);const msg=$('msg-'+id);btn.disabled=true;try{await updateDoc(doc(db,'habiReports',id),{status:select.value,reviewedAt:serverTimestamp(),reviewedBy:auth.currentUser.uid});msg.textContent='Saved';}catch(err){msg.textContent=friendlyError(err);}finally{btn.disabled=false;}}});
+
+const pages = {
+ overview:{title:'Dashboard Overview',intro:'Centralized monitoring workspace for HABI community and city-service modules.',icon:'▦'},
+ tubig:{title:'HABI Tubig',intro:'Water-service reports, barangay water concerns, and service-status monitoring.',icon:'💧'},
+ clean:{title:'HABI Clean',intro:'Waste management, cleanliness reports, collection concerns, and community clean-up monitoring.',icon:'♻️'},
+ flood:{title:'Flood Guard',intro:'Flood incidents, drainage concerns, preparedness updates, and evacuation-related reports.',icon:'🌧️'},
+ urban:{title:'Urban Watch',intro:'Urban development, environmental observations, and land-use/community concerns.',icon:'🏙️'},
+ mobility:{title:'Mobility',intro:'Transportation concerns, route and traffic reports, and mobility-related community submissions.',icon:'🚌'},
+ sos:{title:'SJDM SOS',intro:'Emergency-related reports, incident coordination, and verified emergency information.',icon:'🚨'},
+ kislap:{title:'HABI Kislap',intro:'Electricity interruptions, electrical hazards, and energy-related community reports.',icon:'⚡'},
+ community:{title:'Community Reports',intro:'Review and manage community-submitted reports across HABI.',icon:'📋'},
+ feedback:{title:'HABI Feedback',intro:'Review user comments, concerns, suggestions, and sentiment categories.',icon:'💬'},
+ users:{title:'User Management',intro:'Review registered HABI accounts and account access status.',icon:'👥'},
+ logs:{title:'Admin Activity Logs',intro:'Audit trail of administrative actions, timestamps, and affected modules.',icon:'🧾'},
+ settings:{title:'Settings & All About SJDM',intro:'HABI administration settings and verified information about San Jose del Monte.',icon:'⚙️'}
+};
+const moduleKeys=['tubig','clean','flood','urban','mobility','sos','kislap'];
+function moduleCard(key){const p=pages[key];return `<button class="module-card" data-goto="${key}"><span class="symbol">${p.icon}</span><h3>${p.title}</h3><p>${p.intro}</p><small>Awaiting data connection</small></button>`}
+function empty(title,detail){return `<div class="empty"><strong>${title}</strong>${detail}</div>`}
+
+async function renderLoginHistory(){
+ const host=$('content');host.innerHTML='<div class="panel">Loading user login history…</div>';
+ try{
+  const snap=await getDocs(collection(db,'userLoginLogs'));
+  const rows=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>{
+   const at=a.loggedInAt?.toMillis?.()||Date.parse(a.loggedInAt||'')||0;
+   const bt=b.loggedInAt?.toMillis?.()||Date.parse(b.loggedInAt||'')||0;
+   return bt-at;
+  });
+  const body=rows.map(r=>{
+   const date=r.loggedInAt?.toDate?.()|| (r.loggedInAt?new Date(r.loggedInAt):null);
+   const when=date&&!Number.isNaN(date.getTime())?date.toLocaleString():'Timestamp unavailable';
+   return `<tr><td>${safeHtml(r.displayName||'—')}</td><td>${safeHtml(r.email||'—')}</td><td>${safeHtml(r.uid||r.userId||'—')}</td><td>${safeHtml(when)}</td><td>${safeHtml(r.app||'HABI User')}</td><td title="${safeHtml(r.userAgent||'')}">${safeHtml((r.userAgent||'Not recorded').slice(0,90))}</td></tr>`;
+  }).join('');
+  host.innerHTML=`<div class="page-head"><div><h1>👥 User Management</h1><p>Registered account sign-in activity recorded by HABI User App.</p></div><button class="primary" id="refreshLoginHistory">Refresh</button></div>
+   <div class="grid"><div class="stat"><div class="label">Recorded login events</div><div class="value">${rows.length}</div><div class="sub">From userLoginLogs</div></div><div class="stat"><div class="label">Unique accounts</div><div class="value">${new Set(rows.map(r=>r.uid||r.userId).filter(Boolean)).size}</div><div class="sub">Based on recorded UID</div></div></div>
+   <div class="panel"><h2>Login History</h2><p>Successful email/password sign-ins recorded after this update is installed. Existing historical sign-ins are not backfilled.</p><div style="overflow:auto;margin-top:14px"><table style="width:100%;border-collapse:collapse;font-size:12px;min-width:850px"><thead><tr style="text-align:left;background:#f3f6fa"><th style="padding:10px">Name</th><th style="padding:10px">Email</th><th style="padding:10px">User UID</th><th style="padding:10px">Login time</th><th style="padding:10px">App</th><th style="padding:10px">Browser / device info</th></tr></thead><tbody>${body||'<tr><td colspan="6" style="padding:22px;text-align:center;color:#718096">No login events recorded yet.</td></tr>'}</tbody></table></div></div>`;
+  $('refreshLoginHistory')?.addEventListener('click',renderLoginHistory);
+ }catch(e){host.innerHTML=`<div class="page-head"><div><h1>👥 User Management</h1><p>Login history</p></div></div><div class="panel"><h2>Could not load login history</h2><p>${safeHtml(friendlyError(e))}</p><p>Check that Firestore Rules allow active administrators to read /userLoginLogs.</p></div>`;}
+}
+
+function renderPage(key){
+  const p=pages[key]||pages.overview;
+  $('crumb').textContent=p.title;
+  document.querySelectorAll('[data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===key));
+  $('sidebar').classList.remove('open');
+  let body='';
+  if(key==='overview'){
+    body=`<div class="page-head"><div><h1>Welcome to HABI Admin</h1><p>${p.intro}</p></div><span class="pill">● Admin session verified</span></div>
+    <div class="grid">
+      <div class="stat"><div class="label">Registered users</div><div class="value">—</div><div class="sub">Connect users collection to display</div></div>
+      <div class="stat"><div class="label">Community reports</div><div class="value">—</div><div class="sub">Connect reports collection to display</div></div>
+      <div class="stat"><div class="label">Pending submissions</div><div class="value">—</div><div class="sub">Requires report status data</div></div>
+      <div class="stat"><div class="label">Feedback entries</div><div class="value">—</div><div class="sub">Connect feedback collection to display</div></div>
+    </div>
+    <div class="panel"><h2>Module Command Center</h2><p>Choose a module to open its administration workspace. Live records and actions will be enabled after confirming each module's Firestore collection and data fields.</p><div class="module-grid">${moduleKeys.map(moduleCard).join('')}</div></div>
+    <div class="two-col"><div class="panel"><h2>Recent activity</h2><div id="recentAdminActivity">Loading recent activity…</div></div><div class="panel"><h2>System connection</h2><div class="list-row"><span>Firebase Authentication</span><span class="tag">Connected</span></div><div class="list-row"><span>Admin UID verification</span><span class="tag">Verified on sign-in</span></div><div class="list-row"><span>Module data collections</span><span class="tag">Not configured</span></div></div></div>`;
+  } else if(moduleKeys.includes(key)){
+    body=`<div class="page-head"><div><h1>${p.icon} ${p.title}</h1><p>${p.intro}</p></div><span class="pill">Admin workspace</span></div>
+    <div class="grid"><div class="stat"><div class="label">Total submissions</div><div class="value">—</div><div class="sub">Waiting for connected records</div></div><div class="stat"><div class="label">Pending</div><div class="value">—</div><div class="sub">Waiting for status field</div></div><div class="stat"><div class="label">In progress</div><div class="value">—</div><div class="sub">Waiting for status field</div></div><div class="stat"><div class="label">Resolved</div><div class="value">—</div><div class="sub">Waiting for status field</div></div></div>
+    <div class="panel"><h2>${p.title} Management</h2><p>Dedicated internal workspace for reviewing submissions, checking details, tracking status, and monitoring updates.</p><div class="toolbar"><input type="search" placeholder="Search reports (UI preview only)" disabled><select disabled><option>All statuses</option></select><select disabled><option>All barangays</option></select></div>${empty('No live records connected yet','This panel is intentionally not showing sample or invented reports. We will connect it to the correct Firestore collection after checking the User App submission structure.')}</div>`;
+  } else if(key==='community' || key==='feedback'){
+    body=`<div class="page-head"><div><h1>${p.icon} ${p.title}</h1><p>${p.intro}</p></div><span class="pill">Review workspace</span></div>
+    <div class="grid"><div class="stat"><div class="label">All submissions</div><div class="value">—</div><div class="sub">Requires Firestore integration</div></div><div class="stat"><div class="label">Pending review</div><div class="value">—</div><div class="sub">Requires status field</div></div><div class="stat"><div class="label">Positive</div><div class="value">—</div><div class="sub">Requires sentiment data</div></div><div class="stat"><div class="label">Negative / concerns</div><div class="value">—</div><div class="sub">Requires sentiment data</div></div></div>
+    <div class="panel"><h2>${key==='feedback'?'Feedback and sentiment review':'Community submission review'}</h2><div class="toolbar"><input type="search" placeholder="Search by keyword, user, or barangay" disabled><select disabled><option>All categories</option></select><select disabled><option>All statuses</option></select><select disabled><option>All sentiment</option><option>Positive</option><option>Neutral</option><option>Negative</option></select></div>${empty('No submissions loaded','The filters and moderation actions will be activated after we connect the actual User App submission collection. No mock comments or fake counts are being displayed.')}</div>`;
+  } else if(key==='users'){
+    renderLoginHistory();
+    body='';
+  } else if(key==='logs'){
+    renderAdminActivityLogs();
+    body='';
+  } else {
+    body=`<div class="page-head"><div><h1>⚙️ Settings & All About SJDM</h1><p>${p.intro}</p></div></div><div class="two-col"><div class="panel"><h2>Admin account</h2><div class="list-row"><span>Signed-in email</span><b id="settingsEmail">—</b></div><div class="list-row"><span>Authorization</span><span class="tag">Active admin verified</span></div><button class="primary" id="resetPassword" style="margin-top:15px">Send password reset email</button><p id="resetNote" style="margin-top:10px"></p></div><div class="panel"><h2>All About SJDM</h2><p><b>San Jose del Monte, Bulacan</b><br>HABI stands for “to weave,” reflecting the idea of weaving people, places, community information, and sustainability efforts together.<br><br><b>HABI tagline:</b> Explore. Experience. Give Back.<br><br>Official city facts, emergency contacts, and office information should be verified with authoritative SJDM sources before being published here.</p></div></div>`;
+  }
+  if(key!=='users'&&key!=='logs') $('content').innerHTML=body;
+  if(key==='overview') renderRecentAdminActivity();
+  if(moduleKeys.includes(key)||key==='community'||key==='feedback'){renderLiveReports(key);}
+  if(key==='settings'){
+    $('settingsEmail').textContent=auth.currentUser?.email||'—';
+    $('resetPassword').addEventListener('click',async()=>{const out=$('resetNote');try{if(!auth.currentUser?.email)throw new Error('Walang email ang active admin account.');await sendPasswordResetEmail(auth,auth.currentUser.email);out.textContent='Password reset email request sent. Check Inbox and Spam.';}catch(e){out.textContent=friendlyError(e);}});
+  }
+}
+document.querySelectorAll('[data-page]').forEach(b=>b.addEventListener('click',async()=>{const page=b.dataset.page;await writeAdminActivity('Opened page',pages[page]?.title||page);renderPage(page);}));
+$('content').addEventListener('click',async e=>{const b=e.target.closest('[data-goto]');if(b){await writeAdminActivity('Opened page',pages[b.dataset.goto]?.title||b.dataset.goto);renderPage(b.dataset.goto);}});
+</script>
+
+<style>
+#habiPwaInstall{position:fixed;left:14px;bottom:14px;z-index:10050;border:0;border-radius:999px;padding:11px 16px;background:#174c3c;color:#fff;font:700 13px Arial,sans-serif;box-shadow:0 5px 18px #0003;cursor:pointer}
+#habiPwaHelp{position:fixed;inset:0;z-index:10060;background:#0008;display:none;align-items:center;justify-content:center;padding:18px;font:14px Arial,sans-serif}
+#habiPwaHelp .inner{max-width:360px;background:#fff;color:#20382e;border-radius:16px;padding:22px;line-height:1.55;box-shadow:0 15px 45px #0004}
+#habiPwaHelp button{border:0;border-radius:9px;padding:10px 14px;background:#174c3c;color:#fff;font-weight:700;margin-top:12px}
+@media(min-width:900px){#habiPwaInstall{left:auto;right:18px;bottom:18px}}
+</style>
+<button id="habiPwaInstall" type="button" aria-label="Install HABI app">＋ Install HABI App</button>
+<div id="habiPwaHelp" role="dialog" aria-modal="true" aria-labelledby="habiPwaHelpTitle"><div class="inner"><h2 id="habiPwaHelpTitle">Install HABI App</h2><p id="habiPwaHelpText">Use your browser menu and choose Install app or Add to Home Screen.</p><button id="habiPwaHelpClose" type="button">Close</button></div></div>
+<script>
+(()=>{
+ let deferred=null; const btn=document.getElementById('habiPwaInstall'), modal=document.getElementById('habiPwaHelp'), msg=document.getElementById('habiPwaHelpText');
+ const ios=/iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform==='MacIntel' && navigator.maxTouchPoints>1);
+ const standalone=window.matchMedia('(display-mode: standalone)').matches || navigator.standalone===true;
+ if(standalone){btn.style.display='none';return;}
+ window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e;btn.style.display='block';});
+ btn.addEventListener('click',async()=>{
+   if(deferred){deferred.prompt();try{await deferred.userChoice;}catch(_){}deferred=null;return;}
+   if(ios){msg.textContent='Sa iPhone o iPad: buksan ang Share button sa browser, piliin ang “Add to Home Screen”, tiyaking “Open as Web App” kung available, at i-tap ang Add.';}
+   else{msg.textContent='Buksan ang browser menu (⋮ o Share) at piliin ang “Install app” o “Add to Home Screen”. Sa computer, hanapin ang Install icon sa address bar o piliin ang Install page as app.';}
+   modal.style.display='flex';
+ });
+ document.getElementById('habiPwaHelpClose').addEventListener('click',()=>modal.style.display='none');
+ modal.addEventListener('click',e=>{if(e.target===modal)modal.style.display='none';});
+})();
+</script>
+
+<script>
+if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js').catch(err => console.warn('HABI Admin service worker registration failed:', err)));
+}
+</script>
+</body>
+</html>
