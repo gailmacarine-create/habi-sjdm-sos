@@ -1,8 +1,8 @@
 {
   "id": "./",
-  "name": "HABI User | HABI SJDM SOS",
+  "name": "HABI User | Explore SJDM",
   "short_name": "HABI",
-  "description": "HABI SJDM SOS \u2014 San Jose del Monte community services and reporting app.",
+  "description": "HABI User app — Explore San Jose del Monte.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
