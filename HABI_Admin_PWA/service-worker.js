@@ -1,4 +1,4 @@
-const CACHE_NAME = 'HABI_Admin_PWA_v2_dashboard_metrics';
+const CACHE_NAME = 'HABI_Admin_PWA_v3_install_refresh';
 const APP_SHELL = ['./', './index.html', './manifest.json', './icons/icon-192.png', './icons/icon-512.png', './icons/icon-512-maskable.png', './icons/apple-touch-icon.png', './icons/favicon-32.png'];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(APP_SHELL)).then(() => self.skipWaiting()));
